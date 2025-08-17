@@ -18,25 +18,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
+      - name: Install Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android packages
-        run: |
-          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-          yes | sdkmanager --licenses
-
-      - name: Install Gradle 8.7
-        run: |
-          curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
-          unzip -q gradle.zip
-          echo "$PWD/gradle-8.7/bin" >> $GITHUB_PATH
-
-      - name: Build debug APK
-        run: gradle assembleDebug
+      - name: Build APK
+        run: ./gradlew assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: CVReelApp-debug-apk
+          name: CVMinimalApp-debug-apk
           path: app/build/outputs/apk/debug/*.apk
